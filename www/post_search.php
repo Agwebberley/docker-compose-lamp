@@ -5,7 +5,7 @@ function searchPosts($keyword) {
     global $conn;
     
     // Directly inserting the keyword into the SQL query
-    $sql = "SELECT * FROM BlogPosts WHERE Title LIKE '%$keyword%' OR Content LIKE '%$keyword%'";
+    $sql = "SELECT * FROM Post WHERE Title LIKE '%$keyword%' OR Content LIKE '%$keyword%'";
 
     // Execute the query
     $result = $conn->query($sql);
@@ -20,8 +20,11 @@ function searchPosts($keyword) {
     }
 }
 
-// Example usage
-searchPosts("example_keyword");
+// Get the keyword from the GET request
+$keyword = $_GET['keyword'];
+
+// Call the searchPosts function with the keyword
+searchPosts($keyword);
 
 $conn->close();
 ?>
