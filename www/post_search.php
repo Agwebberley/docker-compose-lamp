@@ -3,8 +3,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <h1>Search Blog Posts</h1>
 <?php include 'navbar.php'; ?>
+    <h1>Search Blog Posts</h1>
+
 <?php
 include 'db_connect.php';
 

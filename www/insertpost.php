@@ -14,16 +14,24 @@ if (!isset($_COOKIE['username'])) {
 
 </head>
 <body>
-<h1>Add New Blog Post</h1>
 
 <?php include 'navbar.php'; ?>
+<h1>Add New Blog Post</h1>
+
 <?php include 'db_connect.php'; ?>
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 
                 <form action="insert_post.php" method="post">
-                    <input type="hidden" class="form-control" id="userid" name="userid" value="<?php echo $_COOKIE['UserID']; ?>">
+                    <input type="hidden" class="form-control" id="userid" name="userid" value="<?php echo $_COOKIE['userId']; ?>">
+
+                    
+
+                    <div class="form-group">
+                        <label for="title">Title:</label>
+                        <input type="text" class="form-control" id="title" name="title">
+                    </div>
                     <div class="form-group">
                         <!-- A Dropdown with all of the options for category -->
                         <label for="category">Category:</label>
@@ -39,11 +47,48 @@ if (!isset($_COOKIE['username'])) {
                             ?>
                         </select>
                     </div>
-
                     <div class="form-group">
-                        <label for="title">Title:</label>
-                        <input type="text" class="form-control" id="title" name="title">
+                        <label for="tags">Tags:</label>
+                        <input type="text" class="form-control" id="tags" name="tags" onkeydown="handleTagInput(event)">
+                        <div id="tag-pills" class="mt-2">
+                            <!-- Display the selected tags as pills -->
+                        </div>
                     </div>
+
+                    <script>
+                        function handleTagInput(event) {
+                            if (event.key === 'Enter' || event.key === ',') {
+                                event.preventDefault();
+                                const tagInput = document.getElementById('tags');
+                                const tagValue = tagInput.value.trim();
+                                if (tagValue !== '') {
+                                    const tagPills = document.getElementById('tag-pills');
+                                    const pill = document.createElement('span');
+                                    pill.classList.add('badge', 'bg-primary', 'me-2');
+                                    pill.textContent = tagValue;
+                                    
+                                    // Add a delete button to the pill
+                                    const deleteButton = document.createElement('span');
+                                    deleteButton.classList.add('badge', 'ms-1', 'cursor-pointer');
+                                    deleteButton.textContent = 'X';
+                                    deleteButton.addEventListener('click', function() {
+                                        tagPills.removeChild(pill);
+                                    });
+                                    pill.appendChild(deleteButton);
+                                    
+                                    tagPills.appendChild(pill);
+                                    tagInput.value = '';
+                                    
+                                    // Add the tag value to the hidden input field
+                                    const hiddenTagsInput = document.getElementById('hidden-tags');
+                                    hiddenTagsInput.value += tagValue + ',';
+                                }
+                            }
+                        }
+                    </script>
+                    
+                    <input type="hidden" id="hidden-tags" name="hidden-tags">
+
                     <div class="form-group">
                         <label for="content">Content:</label>
                         <textarea class="form-control" id="content" name="content"></textarea>
